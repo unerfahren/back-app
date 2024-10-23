@@ -1,0 +1,26 @@
+components:
+  schemas:
+
+    ValidationErrorsDto:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDto'
+
+    ErrorDto:
+      type: object
+      properties:
+        field:
+          type: string
+          description: invalid field
+        message:
+          type: string
+          description: exception desc
+
+    CommonErrorDto:
+      type: object
+      properties:
+        description:
+          type: string

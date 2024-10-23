@@ -1,0 +1,8 @@
+components:
+  schemas:
+
+    UserDto:
+      type: object
+
+    UserDtoFilter:
+      type: object

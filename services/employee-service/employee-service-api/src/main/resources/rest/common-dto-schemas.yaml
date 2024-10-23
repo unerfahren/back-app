@@ -1,0 +1,69 @@
+components:
+  schemas:
+
+    ValidationErrorsDto:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDto'
+
+    ErrorDto:
+      type: object
+      properties:
+        field:
+          type: string
+          description: invalid field
+        message:
+          type: string
+          description: exception desc
+
+    CommonErrorDto:
+      type: object
+      properties:
+        description:
+          type: string
+
+    UserDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        email:
+          type: string
+        name:
+          type: string
+        lastName:
+          type: string
+        birthsDate:
+          type: string
+          format: date
+        registrationDate:
+          type: string
+          format: date-time
+      required:
+        - email
+
+    UserDtoFilter:
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+        lastName:
+          type: string
+        birthsDate:
+          type: string
+          format: date
+        regDate:
+          type: string
+          format: date-time
+        regDateAfter:
+          type: string
+          format: date-time
+        regDateBefore:
+          type: string
+          format: date-time

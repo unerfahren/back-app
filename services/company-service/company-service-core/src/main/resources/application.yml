@@ -1,0 +1,13 @@
+server:
+  servlet:
+    context-path: /company-service
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: root
+    password: qwe123
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: none
+    show-sql: true

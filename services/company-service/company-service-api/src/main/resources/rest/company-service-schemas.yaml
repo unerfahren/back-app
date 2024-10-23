@@ -1,0 +1,102 @@
+components:
+  schemas:
+
+    CompanyDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        ownerEmail:
+          type: string
+          format: email
+        name:
+          type: string
+      required:
+        - ownerEmail
+        - name
+
+    CompanyDtoFilter:
+      type: object
+      properties:
+        ownerEmail:
+          type: string
+          format: email
+        name:
+          type: string
+
+    BranchDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        address:
+          $ref: "company-service-schemas.yaml#/components/schemas/AddressDto"
+      required:
+        - name
+        - address
+
+    BranchDtoFilter:
+      type: object
+      properties:
+        name:
+          type: string
+        region:
+          type: string
+        area:
+          type: string
+        locality:
+          type: string
+        street:
+          type: string
+        doma:
+          type: string
+        flat:
+          type: string
+        longitude:
+          type: number
+          format: double
+        latitude:
+          type: number
+          format: double
+        distance:
+          type: integer
+
+    AddressDto:
+      type: object
+      properties:
+        region:
+          type: string
+        area:
+          type: string
+        locality:
+          type: string
+        street:
+          type: string
+        doma:
+          type: string
+        flat:
+          type: string
+        location:
+          $ref: "company-service-schemas.yaml#/components/schemas/GeoLocationDto"
+      required:
+        - locality
+        - street
+        - doma
+        - location
+
+    GeoLocationDto:
+      type: object
+      properties:
+        longitude:
+          type: number
+          format: double
+        latitude:
+          type: number
+          format: double
+      required:
+        - longitude
+        - latitude

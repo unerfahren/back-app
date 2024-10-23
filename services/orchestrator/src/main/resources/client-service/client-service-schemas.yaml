@@ -1,0 +1,82 @@
+components:
+  schemas:
+
+    ClientDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: user's id
+        email:
+          type: string
+          format: email
+          description: user's mail
+        firstName:
+          type: string
+          description: user's name
+
+        lastName:
+          type: string
+          description: user's lastname
+        cars:
+          type: array
+          items:
+            $ref: '#/components/schemas/CarDto'
+      required:
+        - email
+        - nickname
+
+    CarDto:
+      type: object
+      properties:
+        brand:
+          type: string
+          description: car's brand
+        model:
+          type: string
+          description: car's model
+        plate:
+          type: string
+          description: car's plate
+      required:
+        - brand
+        - model
+
+    ClientFilter:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          description: user's mail
+        firstName:
+          type: string
+          description: user's name
+        car:
+          type: object
+          properties:
+            brand:
+              type: string
+              description: car's brand
+            model:
+              type: string
+              description: car's model
+
+    ValidationErrorsDto:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDto'
+
+    ErrorDto:
+      type: object
+      properties:
+        field:
+          type: string
+          description: invalid field
+        message:
+          type: string
+          description: exception desc

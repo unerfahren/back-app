@@ -1,0 +1,35 @@
+version: "3.9"
+name: platform
+services:
+
+  postgres-db:
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_USER: "root"
+      POSTGRES_PASSWORD: "qwe123"
+      PGDATA: /data/postgres/platform
+    volumes:
+      - postgres-db:/data/postgres/platform
+    ports:
+      - "5432:5432"
+
+  keycloak:
+    build: keycloak
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: "jdbc:postgresql://postgres-db:5432/keycloak"
+      KC_DB_USERNAME: root
+      KC_DB_PASSWORD: qwe123
+      KC_HOSTNAME: localhost
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KEYCLOAK_IMPORT: /realm.json
+    ports:
+      - "8088:8080"
+    depends_on:
+      - postgres-db
+    entrypoint: "/opt/keycloak/bin/kc.sh start-dev"
+
+volumes:
+  postgres-db:
+    driver: local

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.bilbo.platform</groupId>
+    <artifactId>microservice-parent</artifactId>
+    <version>1.0.0</version>
+  </parent>
+  <artifactId>employee-service</artifactId>
+  <version>1.0.0</version>
+  <packaging>pom</packaging>
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.openapitools</groupId>
+          <artifactId>openapi-generator-maven-plugin</artifactId>
+          <configuration>
+            <apiPackage>com.bilbo.platform.service.employee.api</apiPackage>
+            <modelPackage>com.bilbo.platform.service.employee.model</modelPackage>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+  <modules>
+    <module>employee-service-api</module>
+    <module>employee-service-models</module>
+    <module>employee-service-core</module>
+  </modules>
+
+</project>

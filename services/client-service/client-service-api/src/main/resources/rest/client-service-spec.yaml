@@ -1,0 +1,122 @@
+openapi: 3.0.3
+info:
+  title: client-service
+  description: client-service API
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:8080'
+paths:
+  /clients/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: Client id
+        required: true
+        schema:
+          type: integer
+          format: int64
+    get:
+      operationId: getClient
+      description: get Client by id
+      responses:
+        200:
+          description: found Client by id
+          content:
+            application/json:
+              schema:
+                $ref: "client-service-schemas.yaml#/components/schemas/ClientDto"
+        404:
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/CommonErrorDto"
+    post:
+      operationId: updateClient
+      description: update Client
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "client-service-schemas.yaml#/components/schemas/ClientDto"
+      responses:
+        200:
+          description: Client updated
+          content:
+            application/json:
+              schema:
+                $ref: "client-service-schemas.yaml#/components/schemas/ClientDto"
+        404:
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/CommonErrorDto"
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/ValidationErrorsDto"
+    delete:
+      operationId: deleteClient
+      responses:
+        200:
+          description: Client deleted
+        404:
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/CommonErrorDto"
+  /clients:
+    get:
+      operationId: getClients
+      description: search Clients
+      x-use-data-page: true
+      x-spring-paginated: true
+      parameters:
+        - in: query
+          name: filter
+          schema:
+            $ref: 'client-service-schemas.yaml#/components/schemas/ClientDtoFilter'
+      responses:
+        200:
+          description: found Clients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'client-service-schemas.yaml#/components/schemas/ClientDto'
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/ValidationErrorsDto"
+    post:
+      operationId: createClient
+      description: create Client
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "client-service-schemas.yaml#/components/schemas/ClientDto"
+      responses:
+        201:
+          description: Client created
+          headers:
+            Location:
+              schema:
+                type: string
+                description: location of Client
+              required: true
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/ValidationErrorsDto"

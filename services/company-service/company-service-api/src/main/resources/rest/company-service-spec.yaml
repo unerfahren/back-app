@@ -1,0 +1,299 @@
+openapi: 3.0.3
+info:
+  title: company-service
+  description: company-service API
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:8080'
+paths:
+  /companies/{companyId}:
+    parameters:
+      - name: companyId
+        in: path
+        description: Company id
+        required: true
+        schema:
+          type: integer
+          format: int64
+    get:
+      tags:
+        - companies
+      operationId: getCompany
+      description: get Company by id
+      responses:
+        200:
+          description: found Company by id
+          content:
+            application/json:
+              schema:
+                $ref: "company-service-schemas.yaml#/components/schemas/CompanyDto"
+        404:
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/CommonErrorDto"
+    post:
+      tags:
+        - companies
+      operationId: updateCompany
+      description: update Company
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "company-service-schemas.yaml#/components/schemas/CompanyDto"
+      responses:
+        200:
+          description: Company updated
+          content:
+            application/json:
+              schema:
+                $ref: "company-service-schemas.yaml#/components/schemas/CompanyDto"
+        404:
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/CommonErrorDto"
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/ValidationErrorsDto"
+    delete:
+      tags:
+        - companies
+      operationId: deleteCompany
+      responses:
+        200:
+          description: Company deleted
+        404:
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/CommonErrorDto"
+  /companies:
+    get:
+      tags:
+        - companies
+      operationId: getCompanies
+      description: search Companies
+      x-use-data-page: true
+      x-spring-paginated: true
+      parameters:
+        - in: query
+          name: filter
+          schema:
+            $ref: 'company-service-schemas.yaml#/components/schemas/CompanyDtoFilter'
+      responses:
+        200:
+          description: found Companies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'company-service-schemas.yaml#/components/schemas/CompanyDto'
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/ValidationErrorsDto"
+    post:
+      tags:
+        - companies
+      operationId: createCompany
+      description: create Company
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "company-service-schemas.yaml#/components/schemas/CompanyDto"
+      responses:
+        201:
+          description: Company created
+          headers:
+            Location:
+              schema:
+                type: string
+                description: location of Company
+              required: true
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/ValidationErrorsDto"
+  /companies/{companyId}/branches/{branchId}:
+    parameters:
+      - name: companyId
+        in: path
+        description: Company id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: branchId
+        in: path
+        description: Branch id
+        required: true
+        schema:
+          type: integer
+          format: int64
+    get:
+      tags:
+        - branches
+      operationId: getBranch
+      description: get Branch by id
+      responses:
+        200:
+          description: found Branch by id
+          content:
+            application/json:
+              schema:
+                $ref: "company-service-schemas.yaml#/components/schemas/BranchDto"
+        404:
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/CommonErrorDto"
+    post:
+      tags:
+        - branches
+      operationId: updateBranch
+      description: update Branch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "company-service-schemas.yaml#/components/schemas/BranchDto"
+      responses:
+        200:
+          description: Branch updated
+          content:
+            application/json:
+              schema:
+                $ref: "company-service-schemas.yaml#/components/schemas/BranchDto"
+        404:
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/CommonErrorDto"
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/ValidationErrorsDto"
+    delete:
+      tags:
+        - branches
+      operationId: deleteBranch
+      responses:
+        200:
+          description: Branch deleted
+        404:
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/CommonErrorDto"
+  /companies/{companyId}/branches:
+    parameters:
+      - name: companyId
+        in: path
+        description: Company id
+        required: true
+        schema:
+          type: integer
+          format: int64
+    get:
+      tags:
+        - branches
+      operationId: getBranches
+      description: search Branches
+      x-use-data-page: true
+      x-spring-paginated: true
+      parameters:
+        - in: query
+          name: filter
+          schema:
+            $ref: 'company-service-schemas.yaml#/components/schemas/BranchDtoFilter'
+      responses:
+        200:
+          description: found Branches
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'company-service-schemas.yaml#/components/schemas/BranchDto'
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/ValidationErrorsDto"
+    post:
+      tags:
+        - branches
+      operationId: createBranch
+      description: create Branch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "company-service-schemas.yaml#/components/schemas/BranchDto"
+      responses:
+        201:
+          description: Branch created
+          headers:
+            Location:
+              schema:
+                type: string
+                description: location of Branch
+              required: true
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/ValidationErrorsDto"
+  /branches:
+    get:
+      tags:
+        - branches
+      operationId: searchBranches
+      description: search Branches
+      x-use-data-page: true
+      x-spring-paginated: true
+      parameters:
+        - in: query
+          name: filter
+          schema:
+            $ref: 'company-service-schemas.yaml#/components/schemas/BranchDtoFilter'
+      responses:
+        200:
+          description: found Branches
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'company-service-schemas.yaml#/components/schemas/BranchDto'
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/ValidationErrorsDto"

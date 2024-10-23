@@ -1,0 +1,122 @@
+openapi: 3.0.3
+info:
+  title: client-service
+  description: client-service
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:8080'
+paths:
+  /keycloak:
+    post:
+      operationId: createKeycloakClient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "client-service-schemas.yaml#/components/schemas/ClientDto"
+      responses:
+        200:
+          description: client created
+  /keycloak/{email}:
+    parameters:
+      - name: email
+        in: path
+        description: client email
+        required: true
+        schema:
+          type: string
+    delete:
+      operationId: deleteKeycloakClient
+      responses:
+        200:
+          description: client deleted
+        404:
+          description: not found
+
+  /clients/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: client id
+        required: true
+        schema:
+          type: integer
+          format: int64
+    get:
+      operationId: getClient
+      responses:
+        200:
+          description: found client
+          content:
+            application/json:
+              schema:
+                $ref: "client-service-schemas.yaml#/components/schemas/ClientDto"
+        404:
+          description: not found
+    post:
+      operationId: updateClient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "client-service-schemas.yaml#/components/schemas/ClientDto"
+      responses:
+        200:
+          description: client updated
+        404:
+          description: not found
+    delete:
+      operationId: deleteClient
+      responses:
+        200:
+          description: client deleted
+        404:
+          description: not found
+  /clients:
+    get:
+      operationId: getClients
+      x-use-data-page: true
+      x-spring-paginated: true
+      parameters:
+        - in: query
+          name: filter
+          schema:
+            $ref: 'client-service-schemas.yaml#/components/schemas/ClientFilter'
+      responses:
+        200:
+          description: found clients with pagination
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'client-service-schemas.yaml#/components/schemas/ClientDto'
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: 'client-service-schemas.yaml#/components/schemas/ValidationErrorsDto'
+    post:
+      operationId: createClient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "client-service-schemas.yaml#/components/schemas/ClientDto"
+      responses:
+        201:
+          description: client created
+          headers:
+            Location:
+              schema:
+                type: string
+                description: location of resource
+              required: true
+          content:
+            application/json:
+              schema:
+                $ref: "client-service-schemas.yaml#/components/schemas/ClientDto"

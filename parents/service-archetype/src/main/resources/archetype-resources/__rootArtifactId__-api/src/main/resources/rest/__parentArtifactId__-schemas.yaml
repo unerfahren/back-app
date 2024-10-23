@@ -1,0 +1,12 @@
+#set($resourceList = $resources.split(","))
+components:
+  schemas:
+#foreach ($resource in $resourceList)
+  #set($name = $resource.split(":")[1])
+
+    ${name}:
+      type: object
+
+    ${name}Filter:
+      type: object
+#end

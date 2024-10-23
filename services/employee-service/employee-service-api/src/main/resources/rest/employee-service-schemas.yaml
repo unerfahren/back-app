@@ -1,0 +1,29 @@
+components:
+  schemas:
+
+    EmployeeDto:
+      type: object
+      allOf:
+        - $ref: "common-dto-schemas.yaml#/components/schemas/UserDto"
+        - properties:
+            companyId:
+              type: integer
+              format: int64
+            branchId:
+              type: integer
+              format: int64
+      required:
+        - companyId
+        - branchId
+
+    EmployeeDtoFilter:
+      type: object
+      allOf:
+        - $ref: "common-dto-schemas.yaml#/components/schemas/UserDtoFilter"
+        - properties:
+            companyId:
+              type: integer
+              format: int64
+            branchId:
+              type: integer
+              format: int64

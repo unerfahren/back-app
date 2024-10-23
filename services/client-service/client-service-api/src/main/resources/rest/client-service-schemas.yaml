@@ -1,0 +1,12 @@
+components:
+  schemas:
+
+    ClientDto:
+      type: object
+      allOf:
+        - $ref: "common-dto-schemas.yaml#/components/schemas/UserDto"
+
+    ClientDtoFilter:
+      type: object
+      allOf:
+        - $ref: "common-dto-schemas.yaml#/components/schemas/UserDtoFilter"

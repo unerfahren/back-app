@@ -1,0 +1,122 @@
+openapi: 3.0.3
+info:
+  title: employee-service
+  description: employee-service API
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:8080'
+paths:
+  /employees/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: Employee id
+        required: true
+        schema:
+          type: integer
+          format: int64
+    get:
+      operationId: getEmployee
+      description: get Employee by id
+      responses:
+        200:
+          description: found Employee by id
+          content:
+            application/json:
+              schema:
+                $ref: "employee-service-schemas.yaml#/components/schemas/EmployeeDto"
+        404:
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/CommonErrorDto"
+    post:
+      operationId: updateEmployee
+      description: update Employee
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "employee-service-schemas.yaml#/components/schemas/EmployeeDto"
+      responses:
+        200:
+          description: Employee updated
+          content:
+            application/json:
+              schema:
+                $ref: "employee-service-schemas.yaml#/components/schemas/EmployeeDto"
+        404:
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/CommonErrorDto"
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/ValidationErrorsDto"
+    delete:
+      operationId: deleteEmployee
+      responses:
+        200:
+          description: Employee deleted
+        404:
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/CommonErrorDto"
+  /employees:
+    get:
+      operationId: getEmployees
+      description: search Employees
+      x-use-data-page: true
+      x-spring-paginated: true
+      parameters:
+        - in: query
+          name: filter
+          schema:
+            $ref: 'employee-service-schemas.yaml#/components/schemas/EmployeeDtoFilter'
+      responses:
+        200:
+          description: found Employees
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'employee-service-schemas.yaml#/components/schemas/EmployeeDto'
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/ValidationErrorsDto"
+    post:
+      operationId: createEmployee
+      description: create Employee
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "employee-service-schemas.yaml#/components/schemas/EmployeeDto"
+      responses:
+        201:
+          description: Employee created
+          headers:
+            Location:
+              schema:
+                type: string
+                description: location of Employee
+              required: true
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/ValidationErrorsDto"

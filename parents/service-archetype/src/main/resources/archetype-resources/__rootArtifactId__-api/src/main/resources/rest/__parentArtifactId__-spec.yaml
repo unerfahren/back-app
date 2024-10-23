@@ -1,0 +1,132 @@
+openapi: 3.0.3
+info:
+  title: ${rootArtifactId}
+  description: ${rootArtifactId} API
+  version: ${version}
+servers:
+  - url: 'http://localhost:8080'
+paths:
+#set($resourceList = $resources.split(","))
+#foreach ($resourceDesc in $resourceList)
+  #set($resourceSplit = $resourceDesc.split(":"))
+  #set($resource = $resourceSplit[0].trim())
+  #set($dtoName = $resourceSplit[1].trim())
+  #set($resourceId = $resourceSplit[2].trim())
+  #set($resourcesName = $resource.substring(0, 1).toUpperCase() + $resource.substring(1, $resource.length()))
+  /${resource}/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: $resourceId id
+        required: true
+        schema:
+          type: integer
+          format: int64
+    get:
+      operationId: get$resourceId
+      description: get $resourceId by id
+      responses:
+        200:
+          description: found $resourceId by id
+          content:
+            application/json:
+              schema:
+                $ref: "${rootArtifactId}-schemas.yaml#/components/schemas/${name}"
+        404:
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/CommonErrorDto"
+    post:
+      operationId: update$resourceId
+      description: update $resourceId
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "${rootArtifactId}-schemas.yaml#/components/schemas/${name}"
+      responses:
+        200:
+          description: $resourceId updated
+          content:
+            application/json:
+              schema:
+                $ref: "${rootArtifactId}-schemas.yaml#/components/schemas/${name}"
+        404:
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/CommonErrorDto"
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/ValidationErrorsDto"
+    delete:
+      operationId: delete$resourceId
+      responses:
+        200:
+          description: $resourceId deleted
+        404:
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/CommonErrorDto"
+  /${resource}:
+    get:
+      operationId: get${resourcesName}
+      description: search $resourcesName
+#if ($paginated.equals("true"))
+      x-use-data-page: true
+      x-spring-paginated: true
+#end
+      parameters:
+        - in: query
+          name: filter
+          schema:
+            $ref: '${rootArtifactId}-schemas.yaml#/components/schemas/${name}Filter'
+      responses:
+        200:
+          description: found ${resourcesName}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '${rootArtifactId}-schemas.yaml#/components/schemas/${name}'
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/ValidationErrorsDto"
+    post:
+      operationId: create$resourceId
+      description: create $resourceId
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "${rootArtifactId}-schemas.yaml#/components/schemas/${name}"
+      responses:
+        201:
+          description: $resourceId created
+          headers:
+            Location:
+              schema:
+                type: string
+                description: location of $resourceId
+              required: true
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/ValidationErrorsDto"
+#end

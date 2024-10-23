@@ -1,0 +1,122 @@
+openapi: 3.0.3
+info:
+  title: keycloak-service
+  description: keycloak-service API
+  version: 1.0-SNAPSHOT
+servers:
+  - url: 'http://localhost:8080'
+paths:
+  /users/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: User id
+        required: true
+        schema:
+          type: integer
+          format: int64
+    get:
+      operationId: getUser
+      description: get User by id
+      responses:
+        200:
+          description: found User by id
+          content:
+            application/json:
+              schema:
+                $ref: "keycloak-service-schemas.yaml#/components/schemas/UserDto"
+        404:
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/CommonErrorDto"
+    post:
+      operationId: updateUser
+      description: update User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "keycloak-service-schemas.yaml#/components/schemas/UserDto"
+      responses:
+        200:
+          description: User updated
+          content:
+            application/json:
+              schema:
+                $ref: "keycloak-service-schemas.yaml#/components/schemas/UserDto"
+        404:
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/CommonErrorDto"
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/ValidationErrorsDto"
+    delete:
+      operationId: deleteUser
+      responses:
+        200:
+          description: User deleted
+        404:
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/CommonErrorDto"
+  /users:
+    get:
+      operationId: getUsers
+      description: search Users
+      x-use-data-page: true
+      x-spring-paginated: true
+      parameters:
+        - in: query
+          name: filter
+          schema:
+            $ref: 'keycloak-service-schemas.yaml#/components/schemas/UserDtoFilter'
+      responses:
+        200:
+          description: found Users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'keycloak-service-schemas.yaml#/components/schemas/UserDto'
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/ValidationErrorsDto"
+    post:
+      operationId: createUser
+      description: create User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "keycloak-service-schemas.yaml#/components/schemas/UserDto"
+      responses:
+        201:
+          description: User created
+          headers:
+            Location:
+              schema:
+                type: string
+                description: location of User
+              required: true
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "common-dto-schemas.yaml#/components/schemas/ValidationErrorsDto"
